@@ -1,0 +1,310 @@
+basePath: /api/v1
+definitions:
+  models.CreateDepartment:
+    properties:
+      company_id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  models.CreateEmployee:
+    properties:
+      company_id:
+        type: integer
+      department_id:
+        type: integer
+      name:
+        type: string
+      passport:
+        $ref: '#/definitions/models.Passport'
+      phone:
+        type: string
+      surname:
+        type: string
+    type: object
+  models.Department:
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  models.Employee:
+    properties:
+      company_id:
+        type: integer
+      department:
+        $ref: '#/definitions/models.Department'
+      id:
+        type: integer
+      name:
+        type: string
+      passport:
+        $ref: '#/definitions/models.Passport'
+      phone:
+        type: string
+      surname:
+        type: string
+    type: object
+  models.Passport:
+    properties:
+      number:
+        type: string
+      type:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server employees service.
+  title: Swagger Employees service
+  version: "1.0"
+paths:
+  /companies:
+    post:
+      consumes:
+      - application/json
+      description: Создать новую компанию
+      parameters:
+      - description: company name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Создать компанию
+      tags:
+      - companies
+  /companies/{id}/employees:
+    get:
+      consumes:
+      - application/json
+      description: Вывести список сотрудников компании
+      parameters:
+      - description: company id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Employee'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Получить сотрудников компании
+      tags:
+      - employees
+  /departments:
+    post:
+      consumes:
+      - application/json
+      description: Создать новый отдел компании
+      parameters:
+      - description: department data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateDepartment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Создать отдел
+      tags:
+      - departments
+  /departments/{id}/employees:
+    get:
+      consumes:
+      - application/json
+      description: Вывести список сотрудников отдела компании
+      parameters:
+      - description: department id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Employee'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Получить сотрудников отдела компании
+      tags:
+      - employees
+  /employees:
+    post:
+      consumes:
+      - application/json
+      description: Создать нового сотрудника
+      parameters:
+      - description: employee data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateEmployee'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Создать сотрудника
+      tags:
+      - employees
+  /employees/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удалить сотрудника
+      parameters:
+      - description: employee id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Удалить сотрудника
+      tags:
+      - employees
+    patch:
+      consumes:
+      - application/json
+      description: Изменить данные о сотруднике
+      parameters:
+      - description: employee id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: employee data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateEmployee'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Изменить данные сотрудника
+      tags:
+      - employees
+schemes:
+- http
+swagger: "2.0"

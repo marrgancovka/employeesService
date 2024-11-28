@@ -19,6 +19,12 @@ import (
 	"syscall"
 )
 
+// @title Swagger Employees service
+// @version 1.0
+// @description This is a sample server employees service.
+// @host localhost:8080
+// @schemes http
+// @BasePath /api/v1
 func main() {
 	app := fx.New(
 		// конструкторы

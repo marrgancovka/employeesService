@@ -113,13 +113,13 @@ func (r *PostgresRepo) GetListDepartmentEmployees(ctx context.Context, idDepartm
 	return listEmployees, nil
 }
 func (r *PostgresRepo) EditEmployee(ctx context.Context, employee *models.Employee) error {
-
+	r.log.Debug("edit employee", "employee", employee)
 	oldEmployee, err := r.GetEmployeeByID(ctx, employee.ID)
 	if err != nil {
 		r.log.Error("get employee", "error", err)
 		return err
 	}
-
+	r.log.Debug("old employee", "old", oldEmployee)
 	err = r.queries.UpdateEmployee(ctx, gen.UpdateEmployeeParams{
 		ID:             employee.ID,
 		Name:           lo.Ternary(employee.Name == "", oldEmployee.Name, employee.Name),
@@ -176,6 +176,9 @@ func (r *PostgresRepo) GetEmployeeByID(ctx context.Context, id int32) (*models.E
 		Passport: models.Passport{
 			Type:   employee.PassportType,
 			Number: employee.PassportNumber,
+		},
+		Department: models.Department{
+			ID: employee.DepartmentID,
 		},
 	}
 
