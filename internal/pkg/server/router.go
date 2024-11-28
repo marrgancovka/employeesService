@@ -1,9 +1,11 @@
 package server
 
 import (
+	_ "employees/docs"
 	handlerEmployee "employees/internal/pkg/employee/delivery/http"
 	"employees/internal/pkg/middleware"
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"go.uber.org/fx"
 	"log/slog"
 	"net/http"
@@ -25,20 +27,29 @@ func NewRouter(p RouterParams) *Router {
 	api.Use(middleware.CORSMiddleware)
 
 	v1 := api.PathPrefix("/v1").Subrouter()
+	v1.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
-	v1.HandleFunc("/employees", p.Handler.CreateEmployee).Methods(http.MethodPost)
-	v1.HandleFunc("/employees/{id}", p.Handler.DeleteEmployee).Methods(http.MethodDelete)
-	v1.HandleFunc("/companies/{id}/employees", p.Handler.GetCompanyEmployees).Methods(http.MethodGet)
-	v1.HandleFunc("/departments/{id}/employees", p.Handler.GetDepartmentCompanyEmployees).Methods(http.MethodGet)
-	v1.HandleFunc("/employees/{id}", p.Handler.UpdateEmployee).Methods(http.MethodPatch)
-	v1.HandleFunc("/companies", p.Handler.CreateCompany).Methods(http.MethodPost)
-	v1.HandleFunc("/departments", p.Handler.CreateDepartment).Methods(http.MethodPost)
+	employees := v1.PathPrefix("/employees").Subrouter()
+
+	employees.HandleFunc("", p.Handler.CreateEmployee).Methods(http.MethodPost)
+	employees.HandleFunc("/{id}", p.Handler.DeleteEmployee).Methods(http.MethodDelete)
+	employees.HandleFunc("/{id}", p.Handler.UpdateEmployee).Methods(http.MethodPatch)
+
+	companies := v1.PathPrefix("/companies").Subrouter()
+
+	companies.HandleFunc("/{id}/employees", p.Handler.GetCompanyEmployees).Methods(http.MethodGet)
+	companies.HandleFunc("", p.Handler.CreateCompany).Methods(http.MethodPost)
+
+	departments := v1.PathPrefix("/departments").Subrouter()
+
+	departments.HandleFunc("/{id}/employees", p.Handler.GetDepartmentCompanyEmployees).Methods(http.MethodGet)
+	departments.HandleFunc("", p.Handler.CreateDepartment).Methods(http.MethodPost)
 
 	router := &Router{
 		handler: api,
 	}
 
-	p.Logger.Info("start server")
+	p.Logger.Info("registered router")
 
 	return router
 }

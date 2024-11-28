@@ -214,7 +214,7 @@ func (h *Handler) GetDepartmentCompanyEmployees(w http.ResponseWriter, r *http.R
 // @Tags         companies
 // @Accept       json
 // @Produce      json
-// @Param        name body string true "company name"
+// @Param        name body models.Company true "company name"
 // @Success      200  {object} integer
 // @Failure      400  {object} string
 // @Failure      404  {object} string

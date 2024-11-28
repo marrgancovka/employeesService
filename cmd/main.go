@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	_ "employees/docs"
 	"employees/internal/pkg/config"
 	"employees/internal/pkg/db"
 	"employees/internal/pkg/employee"

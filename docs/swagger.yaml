@@ -1,5 +1,10 @@
 basePath: /api/v1
 definitions:
+  models.Company:
+    properties:
+      name:
+        type: string
+    type: object
   models.CreateDepartment:
     properties:
       company_id:
@@ -73,7 +78,7 @@ paths:
         name: name
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/models.Company'
       produces:
       - application/json
       responses:
