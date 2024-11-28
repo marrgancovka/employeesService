@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS employees (
     surname TEXT NOT NULL,
     phone TEXT UNIQUE NOT NULL,
     company_id INTEGER REFERENCES companies(id) ON DELETE CASCADE NOT NULL,
-    department_id INTEGER REFERENCES departments(id) ON DELETE SET NULL,
+    department_id INTEGER REFERENCES departments(id) ON DELETE CASCADE NOT NULL,
     passport_type TEXT NOT NULL,
     passport_number TEXT UNIQUE NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),

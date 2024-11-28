@@ -7,8 +7,6 @@ package gen
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createCompany = `-- name: CreateCompany :one
@@ -52,7 +50,7 @@ type CreateEmployeeParams struct {
 	Surname        string
 	Phone          string
 	CompanyID      int32
-	DepartmentID   pgtype.Int4
+	DepartmentID   int32
 	PassportType   string
 	PassportNumber string
 }
@@ -107,9 +105,9 @@ FROM employees
 WHERE id = $1
 `
 
-func (q *Queries) GetDepartmentID(ctx context.Context, id int32) (pgtype.Int4, error) {
+func (q *Queries) GetDepartmentID(ctx context.Context, id int32) (int32, error) {
 	row := q.db.QueryRow(ctx, getDepartmentID, id)
-	var department_id pgtype.Int4
+	var department_id int32
 	err := row.Scan(&department_id)
 	return department_id, err
 }
@@ -135,7 +133,7 @@ type GetEmployeeByIDRow struct {
 	CompanyID      int32
 	PassportType   string
 	PassportNumber string
-	DepartmentID   pgtype.Int4
+	DepartmentID   int32
 }
 
 func (q *Queries) GetEmployeeByID(ctx context.Context, id int32) (GetEmployeeByIDRow, error) {
@@ -166,15 +164,9 @@ SELECT e.id,
        d.phone
 FROM employees e
          JOIN departments d ON e.department_id = d.id
-WHERE e.company_id = $1
-  AND e.department_id = $2
+WHERE e.department_id = $1
 ORDER BY e.id asc
 `
-
-type GetListCompanyDepartmentEmployeeParams struct {
-	CompanyID    int32
-	DepartmentID pgtype.Int4
-}
 
 type GetListCompanyDepartmentEmployeeRow struct {
 	ID             int32
@@ -188,8 +180,8 @@ type GetListCompanyDepartmentEmployeeRow struct {
 	Phone_2        string
 }
 
-func (q *Queries) GetListCompanyDepartmentEmployee(ctx context.Context, arg GetListCompanyDepartmentEmployeeParams) ([]GetListCompanyDepartmentEmployeeRow, error) {
-	rows, err := q.db.Query(ctx, getListCompanyDepartmentEmployee, arg.CompanyID, arg.DepartmentID)
+func (q *Queries) GetListCompanyDepartmentEmployee(ctx context.Context, departmentID int32) ([]GetListCompanyDepartmentEmployeeRow, error) {
+	rows, err := q.db.Query(ctx, getListCompanyDepartmentEmployee, departmentID)
 	if err != nil {
 		return nil, err
 	}
@@ -282,8 +274,9 @@ SET name=$2,
     surname=$3,
     phone=$4,
     company_id=$5,
-    passport_type=$6,
-    passport_number=$7,
+    department_id=$6,
+    passport_type=$7,
+    passport_number=$8,
     updated_at=now()
 WHERE id = $1
 `
@@ -294,6 +287,7 @@ type UpdateEmployeeParams struct {
 	Surname        string
 	Phone          string
 	CompanyID      int32
+	DepartmentID   int32
 	PassportType   string
 	PassportNumber string
 }
@@ -305,6 +299,7 @@ func (q *Queries) UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) 
 		arg.Surname,
 		arg.Phone,
 		arg.CompanyID,
+		arg.DepartmentID,
 		arg.PassportType,
 		arg.PassportNumber,
 	)

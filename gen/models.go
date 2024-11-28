@@ -27,7 +27,7 @@ type Employee struct {
 	Surname        string
 	Phone          string
 	CompanyID      int32
-	DepartmentID   pgtype.Int4
+	DepartmentID   int32
 	PassportType   string
 	PassportNumber string
 	CreatedAt      pgtype.Timestamptz

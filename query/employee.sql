@@ -38,8 +38,7 @@ SELECT e.id,
        d.phone
 FROM employees e
          JOIN departments d ON e.department_id = d.id
-WHERE e.company_id = $1
-  AND e.department_id = $2
+WHERE e.department_id = $1
 ORDER BY e.id asc;
 
 -- name: DeleteEmployee :exec
@@ -53,8 +52,9 @@ SET name=$2,
     surname=$3,
     phone=$4,
     company_id=$5,
-    passport_type=$6,
-    passport_number=$7,
+    department_id=$6,
+    passport_type=$7,
+    passport_number=$8,
     updated_at=now()
 WHERE id = $1;
 

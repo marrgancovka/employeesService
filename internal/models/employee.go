@@ -6,8 +6,10 @@ type Passport struct {
 }
 
 type Department struct {
-	Name  string `json:"name"`
-	Phone string `json:"phone"`
+	ID        int32  `json:"-"`
+	Name      string `json:"name"`
+	Phone     string `json:"phone"`
+	CompanyID int32  `json:"-"`
 }
 
 type Employee struct {
