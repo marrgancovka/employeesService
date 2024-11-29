@@ -5,6 +5,8 @@ import (
 	"employees/internal/models"
 )
 
+//go:generate mockgen -source=interfaces.go -destination=mocks/mock.go
+
 type Usecase interface {
 	CreateEmployee(ctx context.Context, employee *models.CreateEmployee) (int32, error)
 	DeleteEmployee(ctx context.Context, id int32) error

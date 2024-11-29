@@ -60,6 +60,16 @@ definitions:
       type:
         type: string
     type: object
+  models.ResponseID:
+    properties:
+      id:
+        type: integer
+    type: object
+  utils.MessageResponse:
+    properties:
+      msg:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -85,7 +95,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: integer
+            $ref: '#/definitions/models.ResponseID'
         "400":
           description: Bad Request
           schema:
@@ -154,7 +164,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: integer
+            $ref: '#/definitions/models.ResponseID'
         "400":
           description: Bad Request
           schema:
@@ -223,7 +233,7 @@ paths:
         "201":
           description: Created
           schema:
-            type: integer
+            $ref: '#/definitions/models.ResponseID'
         "400":
           description: Bad Request
           schema:
@@ -256,7 +266,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/utils.MessageResponse'
         "400":
           description: Bad Request
           schema:
@@ -294,7 +304,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/utils.MessageResponse'
         "400":
           description: Bad Request
           schema:

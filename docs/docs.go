@@ -43,7 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/models.ResponseID"
                         }
                     },
                     "400": {
@@ -148,7 +148,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/models.ResponseID"
                         }
                     },
                     "400": {
@@ -253,7 +253,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/models.ResponseID"
                         }
                     },
                     "400": {
@@ -303,7 +303,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.MessageResponse"
                         }
                     },
                     "400": {
@@ -360,7 +360,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.MessageResponse"
                         }
                     },
                     "400": {
@@ -475,6 +475,22 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ResponseID": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "utils.MessageResponse": {
+            "type": "object",
+            "properties": {
+                "msg": {
                     "type": "string"
                 }
             }

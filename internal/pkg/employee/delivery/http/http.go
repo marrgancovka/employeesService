@@ -38,7 +38,7 @@ func New(p Params) *Handler {
 // @Accept       json
 // @Produce      json
 // @Param        request body models.CreateEmployee true "employee data"
-// @Success      201  {object} integer
+// @Success      201  {object} models.ResponseID
 // @Failure      400  {object} string
 // @Failure      404  {object} string
 // @Failure      500  {object} string
@@ -61,7 +61,7 @@ func (h *Handler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.log.Info("created new employee", "id", id)
-	utils.Send201(w, id)
+	utils.Send201(w, models.ResponseID{ID: id})
 }
 
 // UpdateEmployee godoc
@@ -72,7 +72,7 @@ func (h *Handler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 // @Produce      json
 // @Param        id path string true "employee id"
 // @Param        request body models.CreateEmployee true "employee data"
-// @Success      200  {object} string
+// @Success      200  {object} utils.MessageResponse
 // @Failure      400  {object} string
 // @Failure      404  {object} string
 // @Failure      500  {object} string
@@ -105,7 +105,7 @@ func (h *Handler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.log.Info("updated employee")
-	utils.Send200(w, "employee updated")
+	utils.Send200(w, utils.MessageResponse{Msg: "employee updated"})
 
 }
 
@@ -116,7 +116,7 @@ func (h *Handler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 // @Accept       json
 // @Produce      json
 // @Param        id path string true "employee id"
-// @Success      200  {object} string
+// @Success      200  {object} utils.MessageResponse
 // @Failure      400  {object} string
 // @Failure      404  {object} string
 // @Failure      500  {object} string
@@ -138,7 +138,7 @@ func (h *Handler) DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.log.Info("deleted employee")
-	utils.Send200(w, "employee deleted")
+	utils.Send200(w, utils.MessageResponse{Msg: "employee deleted"})
 }
 
 // GetCompanyEmployees godoc
@@ -215,7 +215,7 @@ func (h *Handler) GetDepartmentCompanyEmployees(w http.ResponseWriter, r *http.R
 // @Accept       json
 // @Produce      json
 // @Param        name body models.Company true "company name"
-// @Success      200  {object} integer
+// @Success      200  {object} models.ResponseID
 // @Failure      400  {object} string
 // @Failure      404  {object} string
 // @Failure      500  {object} string
@@ -236,7 +236,7 @@ func (h *Handler) CreateCompany(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.log.Info("created company", "id", companyID)
-	utils.Send201(w, companyID)
+	utils.Send201(w, models.ResponseID{ID: companyID})
 }
 
 // CreateDepartment godoc
@@ -246,7 +246,7 @@ func (h *Handler) CreateCompany(w http.ResponseWriter, r *http.Request) {
 // @Accept       json
 // @Produce      json
 // @Param        request body models.CreateDepartment true "department data"
-// @Success      200  {object} integer
+// @Success      200  {object} models.ResponseID
 // @Failure      400  {object} string
 // @Failure      404  {object} string
 // @Failure      500  {object} string
@@ -267,5 +267,5 @@ func (h *Handler) CreateDepartment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.log.Info("created department", "id", departmentID)
-	utils.Send201(w, departmentID)
+	utils.Send201(w, models.ResponseID{ID: departmentID})
 }

@@ -42,3 +42,7 @@ type CreateDepartment struct {
 	Phone     string `json:"phone"`
 	CompanyID int32  `json:"company_id"`
 }
+
+type ResponseID struct {
+	ID int32 `json:"id"`
+}
