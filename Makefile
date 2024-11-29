@@ -1,5 +1,5 @@
 build_:
-	go build -o ./.bin cmd/main/main.go
+	go build -o ./.bin cmd/main.go
 
 build:
 	docker compose build
