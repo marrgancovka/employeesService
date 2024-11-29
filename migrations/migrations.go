@@ -8,16 +8,19 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"go.uber.org/fx"
+	"log/slog"
 )
 
 type Params struct {
 	fx.In
 
-	DB *sql.DB
+	DB     *sql.DB
+	Logger slog.Logger
 }
 
 type Migration struct {
-	db *sql.DB
+	db  *sql.DB
+	log *slog.Logger
 }
 
 //go:embed schema/*.sql
@@ -40,17 +43,20 @@ func RunMirgations(p Params) error {
 	}
 
 	if err = m.Up(); err != nil && err != migrate.ErrNoChange {
+		p.Logger.Error("failed to run migrations: ", "error", err)
 		return fmt.Errorf("migration up failed: %w", err)
 	}
 
 	err = sourceDriver.Close()
 	if err != nil {
-		//
+		p.Logger.Error("failed to close migrations sourceDriver", "error", err)
+		return err
 	}
 
 	err = dbDriver.Close()
 	if err != nil {
-		//
+		p.Logger.Error("failed to close migrations dbDriver", "error", err)
+		return err
 	}
 
 	return nil

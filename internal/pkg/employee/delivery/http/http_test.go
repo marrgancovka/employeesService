@@ -165,7 +165,7 @@ func TestHandler_CreateEmployee(t *testing.T) {
 				DepartmentID: 1,
 			},
 			mockBehavior: func(m *mockEmployee.MockUsecase, employee *models.CreateEmployee) {
-				m.EXPECT().CreateEmployee(gomock.Any(), employee).Return(int32(0), fmt.Errorf(messages.BadRequest))
+				m.EXPECT().CreateEmployee(gomock.Any(), employee).Return(int32(0), fmt.Errorf("Bad request"))
 			},
 			expectedCode: http.StatusBadRequest,
 			expectedBody: fmt.Sprintf(`{"msg":"%v"}`, messages.BadRequest),
